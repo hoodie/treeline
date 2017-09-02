@@ -36,15 +36,15 @@ impl<D: Display> Tree<D> {
             // print single line
             for s in &spaces {
                 if *s {
-                    let _ = write!(f, "{}{} ", config.space(), config.space().repeat(config.depth()));
+                    let _ = write!(f, "{}{}", config.space(), config.space());
                 } else {
-                    let _ = write!(f, "{}{} ", config.bar(), config.space().repeat(config.depth()));
+                    let _ = write!(f, "{}{}", config.bar(), config.space());
                 }
             }
             if last {
-                let _ = writeln!(f, "{}{} {}", config.last(), config.line().repeat(config.depth()), leaf.0);
+                let _ = writeln!(f, "{}{} {}", config.last(), config.line(), leaf.0);
             } else {
-                let _ = writeln!(f, "{}{} {}", config.join(), config.line().repeat(config.depth()), leaf.0);
+                let _ = writeln!(f, "{}{} {}", config.join(), config.line(), leaf.0);
             }
 
             // recurse
@@ -58,12 +58,18 @@ impl<D: Display> Tree<D> {
 }
 
 pub trait TreeConfig {
-    fn space(&self) -> &str {" "}
-    fn line(&self)  -> &str {"─"}
-    fn last(&self)  -> &str {"└"}
-    fn join(&self)  -> &str {"├"}
-    fn bar(&self)   -> &str {"|"}
-    fn depth(&self) -> usize {2}
+    const SPACE: &'static str = " ";
+    const LINE:  &'static str = "─";
+    const LAST:  &'static str = "└";
+    const JOIN:  &'static str = "├";
+    const BAR:   &'static str = "|";
+    const DEPTH: usize = 2;
+    fn space(&self) -> String {Self::SPACE.repeat(Self::DEPTH)}
+    fn line(&self)  -> String {Self::LINE.repeat(Self::DEPTH)}
+    fn last(&self)  -> &str {Self::LAST}
+    fn join(&self)  -> &str {Self::JOIN}
+    fn bar(&self)   -> &str {Self::BAR}
+    fn depth(&self) -> usize{Self::DEPTH}
 }
 
 pub struct DefaultTreeConfig;

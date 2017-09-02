@@ -28,11 +28,10 @@ fn tree<P: AsRef<Path>>(p: P) -> io::Result<Tree<String>> {
 
 pub struct SimpleTreeConfig;
 impl TreeConfig for SimpleTreeConfig {
-    fn line(&self)  -> &str {"-"}
-    fn last(&self)  -> &str {"+"}
-    fn join(&self)  -> &str {"+"}
-    fn bar(&self)   -> &str {"|"}
-    fn depth(&self) -> usize {1}
+    const LINE: &'static str = "-";
+    const LAST: &'static str = "+";
+    const JOIN: &'static str = "+";
+    const BAR: &'static str = "|";
 }
 
 pub struct SimpleTree<D: fmt::Display>(pub Tree<D>);
@@ -45,12 +44,9 @@ impl<D: fmt::Display> fmt::Display for SimpleTree<D> {
 
 pub struct TightTreeConfig;
 impl TreeConfig for TightTreeConfig {
-    fn space(&self) -> &str {" "}
-    fn line(&self)  -> &str {"─"}
-    fn last(&self)  -> &str {"└"}
-    fn join(&self)  -> &str {"├"}
-    fn bar(&self)   -> &str {"│"}
-    fn depth(&self) -> usize {2}
+    const LINE: &'static str = "─";
+    const BAR: &'static str = "│";
+    const DEPTH: usize = 1;
 }
 
 pub struct TightTree<D: fmt::Display>(pub Tree<D>);
@@ -63,11 +59,10 @@ impl<D: fmt::Display> fmt::Display for TightTree<D> {
 
 pub struct EmojiTreeConfig;
 impl TreeConfig for EmojiTreeConfig {
-    fn line(&self)  -> &str {"⟼"}
-    fn last(&self)  -> &str {"💔"}
-    fn join(&self)  -> &str {"💖"}
-    fn bar(&self)   -> &str {"🇮🇪|"}
-    fn depth(&self) -> usize {1}
+    const LINE: &'static str ="⟼";
+    const LAST: &'static str ="💔";
+    const JOIN: &'static str ="💖";
+    const BAR:  &'static str ="🇮🇪|";
 }
 
 pub struct EmojiTree<D: fmt::Display>(pub Tree<D>);
