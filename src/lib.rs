@@ -34,17 +34,27 @@ impl<D: Display> Tree<D> {
             let last = i >= leaves.len() - 1;
             let mut clone = spaces.clone();
             // print single line
+            for _ in (0..config.height()) {
+                for s in &spaces {
+                    if *s {
+                    write!(f, "{}{}", config.space(), config.space())?;
+                } else {
+                    write!(f, "{}{}", config.bar(), config.space())?;
+                    }
+                }
+                writeln!(f, "{}", config.bar())?;
+            }
             for s in &spaces {
                 if *s {
-                    let _ = write!(f, "{}{}", config.space(), config.space());
+                    write!(f, "{}{}", config.space(), config.space())?;
                 } else {
-                    let _ = write!(f, "{}{}", config.bar(), config.space());
+                    write!(f, "{}{}", config.bar(), config.space())?;
                 }
             }
             if last {
-                let _ = writeln!(f, "{}{} {}", config.last(), config.line(), leaf.0);
+                writeln!(f, "{}{} {}", config.last(), config.line(), leaf.0)?;
             } else {
-                let _ = writeln!(f, "{}{} {}", config.join(), config.line(), leaf.0);
+                writeln!(f, "{}{} {}", config.join(), config.line(), leaf.0)?;
             }
 
             // recurse
@@ -63,13 +73,15 @@ pub trait TreeConfig {
     const LAST:  &'static str = "└";
     const JOIN:  &'static str = "├";
     const BAR:   &'static str = "|";
+    const HEIGHT: usize = 0;
     const DEPTH: usize = 2;
     fn space(&self) -> String {Self::SPACE.repeat(Self::DEPTH)}
     fn line(&self)  -> String {Self::LINE.repeat(Self::DEPTH)}
-    fn last(&self)  -> &str {Self::LAST}
-    fn join(&self)  -> &str {Self::JOIN}
-    fn bar(&self)   -> &str {Self::BAR}
+    fn last(&self)  -> String {Self::LAST.into()}
+    fn join(&self)  -> String {Self::JOIN.into()}
+    fn bar(&self)   -> String {Self::BAR.into()}
     fn depth(&self) -> usize{Self::DEPTH}
+    fn height(&self) -> usize{Self::HEIGHT}
 }
 
 pub struct DefaultTreeConfig;

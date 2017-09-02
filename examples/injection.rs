@@ -46,7 +46,9 @@ pub struct TightTreeConfig;
 impl TreeConfig for TightTreeConfig {
     const LINE: &'static str = "─";
     const BAR: &'static str = "│";
-    const DEPTH: usize = 1;
+    const SPACE: &'static str = " ";
+    const HEIGHT: usize = 0;
+    const DEPTH: usize = 2;
 }
 
 pub struct TightTree<D: fmt::Display>(pub Tree<D>);
@@ -77,8 +79,8 @@ impl<D: fmt::Display> fmt::Display for EmojiTree<D> {
 fn main() {
     let dir = env::args().nth(1).unwrap_or(String::from("."));
     match tree(dir) {
-        Ok(tree) => println!("{}", tree),
-        //Ok(tree) => println!("{}", SimpleTree(tree)),
+        //Ok(tree) => println!("{}", tree),
+        Ok(tree) => println!("{}", SimpleTree(tree)),
         Err(err) => println!("error: {}", err)
     }
 
